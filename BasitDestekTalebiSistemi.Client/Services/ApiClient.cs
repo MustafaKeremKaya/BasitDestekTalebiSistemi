@@ -10,7 +10,7 @@ using BasitDestekTalebiSistemi.Entities.DTOs;
 namespace BasitDestekTalebiSistemi.Client.Services
 {
 
-    public class ApiClient : IApiClient
+    public class ApiClient
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonOptions;

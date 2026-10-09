@@ -24,7 +24,5 @@ namespace BasitDestekTalebiSistemi.Entities.DTOs
         public int ReplyCount { get; set; }
 
         public List<string> Participants { get; set; } = new List<string>();
-
-        public List<ReplyResponse> Replies { get; set; } = new List<ReplyResponse>();
     }
 }

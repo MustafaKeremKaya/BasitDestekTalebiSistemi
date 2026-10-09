@@ -31,7 +31,7 @@ Kullanıcılar bir sorunu bildirmek için destek talebi açabilir, açılan tale
 |---|---|---|---|
 | POST | `/api/tickets` | Yeni talep oluşturur (açık durumda başlar) | 201 / 400 |
 | GET | `/api/tickets` | Tüm talepleri listeler | 200 |
-| GET | `/api/tickets/{id}` | Talep detayı (durum, yanıt sayısı, katılımcılar, yanıtlar) | 200 / 404 |
+| GET | `/api/tickets/{id}` | Talep detayı (durum, yanıt sayısı, katılımcılar) | 200 / 404 |
 | GET | `/api/tickets/{id}/replies` | Talebe ait yanıtları listeler | 200 / 404 |
 | POST | `/api/tickets/{id}/replies` | Talebe yanıt ekler | 201 / 400 / 404 |
 | PUT | `/api/tickets/{id}/close` | Talebi kapatır | 200 / 400 / 404 |
@@ -123,9 +123,9 @@ Ekran çıktıları:
 **Talep listesi (`[1] Talepleri Listele`):** Talepler ID, başlık, durum (yeşil "Acik" / kırmızı "Kapali"), açan kişi, tarih ve yanıt sayısıyla tablo halinde gösterilir.
 ```
 --- DESTEK TALEPLERI ---
-ID   Baslik                          Durum   Acan Kisi        Tarih             Yanit
--------------------------------------------------------------------------------------
-3    Mail gelmiyor                   Acik    Ahmet            9.10.2026 23:19       1
+ID   Baslik                          Durum   Acan Kisi        Yanit
+-------------------------------------------------------------------
+3    Mail gelmiyor                   Acik    Ahmet                1
 ```
 
 **Talep detayı:** Talebin bilgileri, yanıt sayısı, yanıt veren katılımcılar ve geçmiş yanıtlar tarih sırasıyla gösterilir.
@@ -135,14 +135,13 @@ TALEP #3: Mail gelmiyor
 ==================================================
 Durum       : Kapali
 Acan Kisi   : Ahmet
-Acilis      : 9.10.2026 23:19
 Aciklama    : Sabahtan beri Outlook'a hiç mail düşmüyor.
 Yanit Sayisi: 2
 Katilimcilar: Ahmet, Mehmet
 
 --- YANITLAR ---
-[9.10.2026 23:19] Ahmet: Acil bakılmasını rica ediyorum.
-[9.10.2026 23:20] Mehmet: Sunucuyu kontrol ettim, düzeldi.
+Ahmet: Acil bakılmasını rica ediyorum.
+Mehmet: Sunucuyu kontrol ettim, düzeldi.
 ```
 
 **Kapalı talebe yanıt (diğer terminalde, API'nin döndürdüğü hata):**

@@ -1,5 +1,5 @@
 ## Adım 0: Proje İskeleti — Katmanlı Mimari
-- [x] Solution dosyasını doğrula ve yapılandır (BasitDestekTalebiSistemi.slnx)
+- [x] Solution dosyasını doğrula ve yapılandır (destekTakip.slnx, instructions.txt ve tasks.txt Documentations solution klasöründe)
 - [x] BasitDestekTalebiSistemi.Core class library projesi oluştur → Solution'a ekle
 - [x] BasitDestekTalebiSistemi.Entities class library projesi oluştur → Solution'a ekle
 - [x] BasitDestekTalebiSistemi.DataAccess class library projesi oluştur → Solution'a ekle
@@ -37,15 +37,15 @@
 - [x] BasitDestekTalebiSistemi.Entities/Enums/TicketStatus.cs — Talep durum enum tanımı (Open = 1, Closed = 2)
 - [x] BasitDestekTalebiSistemi.Entities/Concrete/Ticket.cs — IEntity implement eden talep entity sınıfı { Id: int, Title: string, Description: string, CreatedBy: string, Status: TicketStatus, CreatedAt: DateTime, Replies: ICollection<Reply> }
 - [x] BasitDestekTalebiSistemi.Entities/Concrete/Reply.cs — IEntity implement eden yanıt entity sınıfı { Id: int, TicketId: int, RepliedBy: string, Content: string, CreatedAt: DateTime, Ticket: Ticket }
-- [x] BasitDestekTalebiSistemi.Entities/DTOs/Ticket/CreateTicketRequest.cs — IDto implement eder { Title: string, Description: string, CreatedBy: string }
-- [x] BasitDestekTalebiSistemi.Entities/DTOs/Ticket/TicketSummaryResponse.cs — IDto implement eder { Id: int, Title: string, Status: TicketStatus, CreatedBy: string, CreatedAt: DateTime, ReplyCount: int }
-- [x] BasitDestekTalebiSistemi.Entities/DTOs/Ticket/TicketDetailResponse.cs — IDto implement eder { Id: int, Title: string, Description: string, Status: TicketStatus, CreatedBy: string, CreatedAt: DateTime, ReplyCount: int, Participants: List<string>, Replies: List<ReplyResponse> }
-- [x] BasitDestekTalebiSistemi.Entities/DTOs/Reply/CreateReplyRequest.cs — IDto implement eder { RepliedBy: string, Content: string }
-- [x] BasitDestekTalebiSistemi.Entities/DTOs/Reply/ReplyResponse.cs — IDto implement eder { Id: int, TicketId: int, RepliedBy: string, Content: string, CreatedAt: DateTime }
+- [x] BasitDestekTalebiSistemi.Entities/DTOs/CreateTicketRequest.cs — IDto implement eder { Title: string, Description: string, CreatedBy: string }
+- [x] BasitDestekTalebiSistemi.Entities/DTOs/TicketSummaryResponse.cs — IDto implement eder { Id: int, Title: string, Status: TicketStatus, CreatedBy: string, CreatedAt: DateTime, ReplyCount: int }
+- [x] BasitDestekTalebiSistemi.Entities/DTOs/TicketDetailResponse.cs — IDto implement eder { Id: int, Title: string, Description: string, Status: TicketStatus, CreatedBy: string, CreatedAt: DateTime, ReplyCount: int, Participants: List<string> }
+- [x] BasitDestekTalebiSistemi.Entities/DTOs/CreateReplyRequest.cs — IDto implement eder { RepliedBy: string, Content: string }
+- [x] BasitDestekTalebiSistemi.Entities/DTOs/ReplyResponse.cs — IDto implement eder { Id: int, TicketId: int, RepliedBy: string, Content: string, CreatedAt: DateTime }
 
 ## Adım 3: DataAccess Katmanı
 - [x] BasitDestekTalebiSistemi.DataAccess/Abstract/ITicketDal.cs — IEntityRepository<Ticket> genişletir + List<TicketSummaryResponse> GetTicketSummaries() (yanıt sayısıyla liste) ve TicketDetailResponse? GetTicketDetail(int ticketId) tanımı
-- [x] BasitDestekTalebiSistemi.DataAccess/Abstract/IReplyDal.cs — IEntityRepository<Reply> genişletir + List<ReplyResponse> GetRepliesByTicketId(int ticketId) tanımı
+- [x] BasitDestekTalebiSistemi.DataAccess/Abstract/IReplyDal.cs — IEntityRepository<Reply> genişletir (ek metod yok, mesajlaşmadaki IMessageDal gibi)
 - [x] BasitDestekTalebiSistemi.DataAccess/Concrete/EntityFramework/AppDbContext.cs — DbContext sınıfı (DbSet<Ticket>, DbSet<Reply>, OnModelCreating Fluent API konfigürasyonu, ilişki ve foreign key kısıtlamaları)
 - [x] BasitDestekTalebiSistemi.DataAccess/Concrete/EntityFramework/EfTicketDal.cs — EfEntityRepositoryBase<Ticket, AppDbContext> ve ITicketDal implementasyonu
 - [x] BasitDestekTalebiSistemi.DataAccess/Concrete/EntityFramework/EfReplyDal.cs — EfEntityRepositoryBase<Reply, AppDbContext> ve IReplyDal implementasyonu
@@ -61,14 +61,14 @@
        IDataResult<ReplyResponse> AddReply(int ticketId, CreateReplyRequest request)
        IDataResult<List<ReplyResponse>> GetRepliesByTicketId(int ticketId)
 - [x] BasitDestekTalebiSistemi.Business/Concrete/TicketManager.cs — ITicketService implementasyonu (ITicketDal enjeksiyonu, başlık/açıklama/oluşturan kişi validasyonları, talep varlık kontrolü, kapalı talep tekrar kapatılamaz iş kuralı)
-- [x] BasitDestekTalebiSistemi.Business/Concrete/ReplyManager.cs — IReplyService implementasyonu (IReplyDal ve ITicketDal enjeksiyonu, içerik/yanıtlayan kişi validasyonları, talep varlık kontrolü, kapalı talebe yanıt eklenemez iş kuralı)
+- [x] BasitDestekTalebiSistemi.Business/Concrete/ReplyManager.cs — IReplyService implementasyonu (IReplyDal ve ITicketDal enjeksiyonu, içerik/yanıtlayan kişi validasyonları, talep varlık kontrolü, kapalı talebe yanıt eklenemez iş kuralı, yanıt listesi GetAll filtresiyle alınıp Manager içinde sıralanır ve DTO'ya çevrilir)
 - [x] BasitDestekTalebiSistemi.Business/DependencyResolvers/Autofac/AutofacBusinessModule.cs — IoC bağımlılık eşlemeleri (ITicketDal-EfTicketDal, IReplyDal-EfReplyDal, ITicketService-TicketManager, IReplyService-ReplyManager, AppDbContext)
 
 ## Adım 5: API Katmanı
 - [x] BasitDestekTalebiSistemi.Api/Program.cs — Autofac ServiceProviderFactory entegrasyonu (UseServiceProviderFactory, RegisterModule)
 - [x] BasitDestekTalebiSistemi.Api/Program.cs — Kestrel LAN erişimi yapılandırması (http://0.0.0.0:5000 veya ayarlanabilir port) ve CORS politikası
 - [x] BasitDestekTalebiSistemi.Api/Program.cs — Swagger/OpenAPI dokümantasyon servisleri ve middleware kaydı
-- [x] BasitDestekTalebiSistemi.Api/Middlewares/ExceptionMiddleware.cs — Global hata yakalama middleware sınıfı (500 Internal Server Error ve standart hata formatı dönüşü)
+- [x] BasitDestekTalebiSistemi.Api/Middleware/GlobalExceptionMiddleware.cs — Global hata yakalama middleware sınıfı (500 Internal Server Error ve standart hata formatı dönüşü)
 - [x] BasitDestekTalebiSistemi.Api/Controllers/TicketsController.cs — RESTful talep controller uç noktaları:
        POST   /api/tickets              → 201 Created (Başarılı) / 400 Bad Request
        GET    /api/tickets              → 200 OK (Tüm talepler)
@@ -90,20 +90,20 @@
 - [x] Olmayan talep ID ile GET /api/tickets/9999 çağrısı yapıp 404 Not Found döndüğünün doğrulanması
 - [x] Boş başlık veya boş içerik ile POST çağrısı yapıp 400 Bad Request döndüğünün doğrulanması
 - [x] POST /api/tickets/{id}/replies ile talebe yanıt ekleme doğrulaması
-- [x] GET /api/tickets/{id}/replies ve GET /api/tickets/{id} çağrılarında yanıtların ve katılımcı listesinin eksiksiz geldiğinin doğrulanması
+- [x] GET /api/tickets/{id}/replies çağrısında yanıtların, GET /api/tickets/{id} çağrısında yanıt sayısı ve katılımcı listesinin eksiksiz geldiğinin doğrulanması
 - [x] PUT /api/tickets/{id}/close ile talebin kapatıldığının doğrulanması
 - [x] Kapalı talebe POST /api/tickets/{id}/replies ile yanıt göndermeyi deneyip 400 Bad Request ve anlaşılır hata mesajı alındığının doğrulanması
 - [x] Zaten kapalı olan talebe PUT /api/tickets/{id}/close çağrısı yapıp 400 Bad Request ve anlaşılır hata mesajı alındığının doğrulanması
 
 ## Adım 8: Console Client — API Bağlantı Katmanı
-- [x] BasitDestekTalebiSistemi.Client/Services/IApiClient.cs — İstemci HTTP servis kontratı:
+- [x] BasitDestekTalebiSistemi.Client/Services/ApiClient.cs — HttpClient ile API çağrıları (mesajlaşmadaki gibi arayüzsüz, ekranlar doğrudan ApiClient alır):
        Task<ApiResponse<List<TicketSummaryResponse>>> GetTicketsAsync()
        Task<ApiResponse<TicketDetailResponse>> GetTicketDetailAsync(int id)
        Task<ApiResponse<TicketDetailResponse>> CreateTicketAsync(CreateTicketRequest request)
        Task<ApiResponse<List<ReplyResponse>>> GetRepliesAsync(int ticketId)
        Task<ApiResponse<ReplyResponse>> AddReplyAsync(int ticketId, CreateReplyRequest request)
        Task<ApiResponse<object>> CloseTicketAsync(int ticketId)
-- [x] BasitDestekTalebiSistemi.Client/Services/ApiClient.cs — HttpClient implementasyonu (BaseAddress yapılandırması, JSON serileştirme/ayrıştırma, HTTP durum kodu ve hata mesajı yakalama, mesajlaşmadaki gibi ApiResponse<T> { Success, Message, Data } sınıfı)
+- [x] ApiClient detayları (BaseAddress yapılandırması, JSON serileştirme/ayrıştırma, HTTP durum kodu ve hata mesajı yakalama, mesajlaşmadaki gibi ApiResponse<T> { Success, Message, Data } sınıfı)
 - [x] İstemci hata yönetimi: API erişilemezse kullanıcıya anlaşılır bağlantı hatası sunma, 400/404 yanıtlarında API'den gelen mesajı terminale yazdırma
 
 ## Adım 9: Console Client — UI ve Kullanıcı Akışı
@@ -129,7 +129,6 @@
 - [x] Web API ve Console Client uygulamalarını aynı ortamda başlatıp tam döngü testi (Kullanıcı adı gir → Talep aç → Talepleri listele → Detaya gir → Yanıt ekle → Kapat)
 - [x] İki ayrı terminal penceresinde farklı kullanıcı isimleriyle (örn. Ahmet ve Mehmet) aynı talebe yanıt yazma senaryosunun doğrulanması
 - [x] Kapatılan talebin diğer terminalde tekrar kapatılamadığının ve yeni yanıt eklenemediğinin kullanıcı arayüzünde doğrulanması
-- [x] Web API'nin yerel ağ IP'si ile çalıştırılıp harici terminalden erişim testi
 
 ## Adım 11: Dokümantasyon ve Teslimat
 - [x] Proje ana dizininde README.md dosyasının hazırlanması:

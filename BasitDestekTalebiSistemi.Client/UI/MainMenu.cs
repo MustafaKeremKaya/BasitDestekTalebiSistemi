@@ -10,7 +10,7 @@ namespace BasitDestekTalebiSistemi.Client.UI
         private readonly TicketListView _ticketListView;
         private readonly CreateTicketView _createTicketView;
 
-        public MainMenu(IApiClient apiClient)
+        public MainMenu(ApiClient apiClient)
         {
             var ticketDetailView = new TicketDetailView(apiClient);
             _ticketListView = new TicketListView(apiClient, ticketDetailView);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BasitDestekTalebiSistemi.Business.Abstract;
 using BasitDestekTalebiSistemi.Core.Constants;
 using BasitDestekTalebiSistemi.Core.Utilities.Results;
@@ -92,7 +93,19 @@ namespace BasitDestekTalebiSistemi.Business.Concrete
                 return new ErrorDataResult<List<ReplyResponse>>(Messages.TicketNotFound);
             }
 
-            var responseList = _replyDal.GetRepliesByTicketId(ticketId);
+            var replies = _replyDal.GetAll(r => r.TicketId == ticketId);
+
+            var responseList = replies
+                .OrderBy(r => r.CreatedAt)
+                .Select(r => new ReplyResponse
+                {
+                    Id = r.Id,
+                    TicketId = r.TicketId,
+                    RepliedBy = r.RepliedBy,
+                    Content = r.Content,
+                    CreatedAt = r.CreatedAt
+                })
+                .ToList();
 
             return new SuccessDataResult<List<ReplyResponse>>(responseList, Messages.RepliesListed);
         }

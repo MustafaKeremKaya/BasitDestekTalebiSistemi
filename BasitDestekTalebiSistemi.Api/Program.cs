@@ -30,7 +30,7 @@ builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 var app = builder.Build();
 
-app.UseMiddleware<BasitDestekTalebiSistemi.Api.Middlewares.ExceptionMiddleware>();
+app.UseMiddleware<BasitDestekTalebiSistemi.Api.Middleware.GlobalExceptionMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

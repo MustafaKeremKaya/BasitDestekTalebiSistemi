@@ -3,10 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# Yalnızca internship_MessagingApp.slnx kullanılmaktadır.
-# Visual Studio'nun otomatik oluşturduğu MessagingApp.slnx takip edilmez:
-MessagingApp.slnx
-
 # User-specific files
 *.rsuser
 *.suo

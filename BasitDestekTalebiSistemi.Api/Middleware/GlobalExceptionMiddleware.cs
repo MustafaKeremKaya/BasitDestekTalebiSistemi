@@ -4,15 +4,15 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BasitDestekTalebiSistemi.Api.Middlewares
+namespace BasitDestekTalebiSistemi.Api.Middleware
 {
 
-    public class ExceptionMiddleware
+    public class GlobalExceptionMiddleware
     {
 
         private readonly RequestDelegate _next;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public GlobalExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
         }

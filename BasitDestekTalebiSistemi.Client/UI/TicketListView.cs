@@ -10,10 +10,10 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
     public class TicketListView
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
         private readonly TicketDetailView _ticketDetailView;
 
-        public TicketListView(IApiClient apiClient, TicketDetailView ticketDetailView)
+        public TicketListView(ApiClient apiClient, TicketDetailView ticketDetailView)
         {
             _apiClient = apiClient;
             _ticketDetailView = ticketDetailView;

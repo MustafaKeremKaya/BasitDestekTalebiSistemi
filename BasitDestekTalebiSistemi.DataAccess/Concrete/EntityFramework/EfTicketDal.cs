@@ -59,17 +59,6 @@ namespace BasitDestekTalebiSistemi.DataAccess.Concrete.EntityFramework
                         .Select(r => r.RepliedBy)
                         .Where(r => !string.IsNullOrWhiteSpace(r))
                         .Distinct()
-                        .ToList(),
-                    Replies = ticket.Replies
-                        .OrderBy(r => r.CreatedAt)
-                        .Select(r => new ReplyResponse
-                        {
-                            Id = r.Id,
-                            TicketId = r.TicketId,
-                            RepliedBy = r.RepliedBy,
-                            Content = r.Content,
-                            CreatedAt = r.CreatedAt
-                        })
                         .ToList()
                 };
             }
