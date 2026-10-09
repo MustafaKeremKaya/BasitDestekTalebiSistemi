@@ -1,0 +1,76 @@
+Staj Assignment 2: Basit Destek Talebi Sistemi
+
+Amaç
+Bu ödevde ASP.NET Web API kullanarak basit bir destek talebi (ticket) servisi geliştireceksiniz. Aynı zamanda bu servise terminalden bağlanan bir console client yazacaksınız.
+Ödev bireysel olarak yapılacaktır. Kullanıcılar bir sorunu bildirmek için talep açabilecek, açılan taleplere yanıt yazabilecek ve çözülen talepleri kapatabilecektir.
+Bu doküman ne yapılması gerektiğini tanımlar, nasıl yapılacağını tanımlamaz. Teknik kararların çoğu size bırakılmıştır.
+
+Genel Mimari
+Bir adet Web API uygulaması ve bir adet console (terminal) uygulaması yazacaksınız.
+Veritabanı olarak PostgreSQL kullanılacaktır.
+Veriler kalıcı olacak (in-memory değil).
+Gerçek zamanlı iletişim (SignalR, WebSocket vb.) ve polling gerekmez. Liste ve talep bilgileri, kullanıcı istediğinde sunucudan yeniden alınır.
+Kullanıcı girişi / authentication yok. Kullanıcı, uygulamayı açtığında bir isim girer; talepler ve yanıtlar bu isimle oluşturulur.
+
+Veri Modeli
+Aşağıdaki iki kavram üzerinden ilerleyeceksiniz. Alan tiplerini ve ek alan ihtiyacı olup olmadığını (id, tarih vb. dahil) kendiniz belirleyeceksiniz.
+
+Talep (Ticket)
+Alanlar en az şunları içermelidir:
+- id
+- başlık
+- açıklama
+- talebi açan kişi
+- durum (açık / kapalı)
+- oluşturulma zamanı
+
+Yanıt (Reply)
+Alanlar en az şunları içermelidir:
+- id
+- ilişkili olduğu talebin id'si
+- yanıtı yazan kişi
+- içerik
+- yazılma zamanı
+
+Veritabanı şemasını, alan tiplerini ve ilişkileri kendiniz tasarlayacaksınız.
+
+Gerekli Endpoint'ler
+Aşağıdaki işlevleri sağlayan endpoint'leri kendi route/method tasarımınızla oluşturun:
+- Yeni bir talep oluşturma (yeni talep açık durumda başlar)
+- Tüm talepleri listeleme
+- Belirli bir talebin detayını getirme (durumu, kaç yanıt var, kimler yanıt vermiş vb.)
+- Belirli bir talebe ait yanıtları listeleme
+- Belirli bir talebe yanıt ekleme
+- Belirli bir talebi kapatma
+
+Endpoint isimlendirmesi, HTTP metodları, route yapısı ve status code kullanımı size bırakılmıştır. REST prensiplerine mümkün olduğunca uymanız beklenir.
+
+İş Kuralları
+- Kapalı bir talebe yeni yanıt eklenemez.
+- Zaten kapalı olan bir talep tekrar kapatılamaz.
+- Bu durumlarda kullanıcıya anlaşılır bir hata mesajı dönülmelidir.
+
+DTO Kullanımı
+Entity'lerinizi doğrudan API üzerinden dışarı vermeyin/almayın. Request ve response için ayrı DTO yapıları tasarlamanız gerekiyor.
+
+Console Client Gereksinimleri
+Terminalden çalışan ayrı bir uygulama yazacaksınız. Bu uygulama:
+- Açılışta kullanıcıdan bir isim alacak (talep açarken ve yanıt yazarken kullanılacak).
+- Talepleri durumlarıyla birlikte listeleme ve yeni talep açma imkanı sunacak.
+- Bir talebe girildiğinde talebin detayını ve geçmiş yanıtlarını gösterecek.
+- Kullanıcının talebe yanıt yazıp gönderebilmesini sağlayacak.
+- Kullanıcının talebi kapatabilmesini sağlayacak.
+
+Arayüz tasarımı ve kullanıcı akışı size bırakılmıştır.
+
+Beklentiler
+- Kod organizasyonu (katmanlama, sorumlulukların ayrılması)
+- Hata durumlarının uygun şekilde ele alınması (örn. var olmayan bir talebe işlem yapılmaya çalışıldığında bunu hem önyüz uygulamasında hem arka yüz uygulamasında kontrol etmelisiniz)
+- Validasyon (örn. başlığı boş bir talep açılabiliyor mu? boş yanıt gönderilebiliyor mu?)
+- İş kurallarının arka yüz uygulamasında uygulanması
+- PostgreSQL bağlantısının ve şema yönetiminin düzgün kurulması
+- Çalışan, uçtan uca test edilebilir bir sistem (backend ve console client aynı bilgisayarda çalıştırılarak test edilebilir)
+
+Teslim
+- Backend ve console client için ayrı ayrı çalıştırma talimatı (README) hazırlayın.
+- Kodunuzu bir repo üzerinden paylaşın.

@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Documentations/">
+    <File Path="instructions.txt" />
+    <File Path="tasks.txt" />
+  </Folder>
+  <Project Path="BasitDestekTalebiSistemi.Api/BasitDestekTalebiSistemi.Api.csproj" />
+  <Project Path="BasitDestekTalebiSistemi.Business/BasitDestekTalebiSistemi.Business.csproj" />
+  <Project Path="BasitDestekTalebiSistemi.Client/BasitDestekTalebiSistemi.Client.csproj" />
+  <Project Path="BasitDestekTalebiSistemi.Core/BasitDestekTalebiSistemi.Core.csproj" />
+  <Project Path="BasitDestekTalebiSistemi.DataAccess/BasitDestekTalebiSistemi.DataAccess.csproj" />
+  <Project Path="BasitDestekTalebiSistemi.Entities/BasitDestekTalebiSistemi.Entities.csproj" />
+</Solution>
