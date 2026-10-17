@@ -19,14 +19,14 @@ namespace BasitDestekTalebiSistemi.Client
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(@"
 ========================================================================
-BASIT DESTEK TALEBI SISTEMI (TERMINAL CLIENT)
+BASİT DESTEK TALEBİ SİSTEMİ (TERMİNAL İSTEMCİSİ)
 ========================================================================");
             Console.ResetColor();
 
             string currentUser = string.Empty;
             while (string.IsNullOrWhiteSpace(currentUser))
             {
-                var input = ConsoleHelper.Prompt("\nKullanici Adinizi Girin (Maks 50 karakter): ");
+                var input = ConsoleHelper.Prompt("\nKullanıcı Adınızı Girin (Maks. 50 karakter): ");
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
@@ -43,7 +43,7 @@ BASIT DESTEK TALEBI SISTEMI (TERMINAL CLIENT)
                 currentUser = input;
             }
 
-            var serverInput = ConsoleHelper.Prompt("\nSunucu Adresi (Varsayilan icin Enter'a basin [http://localhost:5000]): ");
+            var serverInput = ConsoleHelper.Prompt("\nSunucu Adresi (Varsayılan için Enter'a basın [http://localhost:5000]): ");
             string serverUrl = "http://localhost:5000";
 
             if (!string.IsNullOrWhiteSpace(serverInput))
@@ -56,7 +56,7 @@ BASIT DESTEK TALEBI SISTEMI (TERMINAL CLIENT)
                 }
             }
 
-            ConsoleHelper.WriteInfo($"Sunucuya baglaniliyor: {serverUrl}...");
+            ConsoleHelper.WriteInfo($"Sunucuya bağlanılıyor: {serverUrl}...");
 
             var apiClient = new ApiClient(serverUrl);
 
@@ -64,18 +64,18 @@ BASIT DESTEK TALEBI SISTEMI (TERMINAL CLIENT)
             if (!connectionTest.Success)
             {
                 ConsoleHelper.WriteError(connectionTest.Message);
-                Console.WriteLine("Ipucu: Eger ayni bilgisayardaysaniz Web API'nin acik oldugundan emin olun.");
+                Console.WriteLine("İpucu: Eğer aynı bilgisayardaysanız Web API'nin açık olduğundan emin olun.");
 
                 var retryChoice = ConsoleHelper.Prompt("\nYine de devam etmek istiyor musunuz? (E/H): ");
                 if (!string.Equals(retryChoice, "E", StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.WriteLine("Uygulama kapatiliyor.");
+                    Console.WriteLine("Uygulama kapatılıyor.");
                     return;
                 }
             }
             else
             {
-                ConsoleHelper.WriteSuccess("Sunucuya basariyla baglanildi!");
+                ConsoleHelper.WriteSuccess("Sunucuya başarıyla bağlanıldı!");
             }
 
             var menu = new MainMenu(apiClient);

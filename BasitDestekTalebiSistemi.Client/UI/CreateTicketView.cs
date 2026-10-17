@@ -20,13 +20,13 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
         public async Task ShowAsync(string currentUser)
         {
-            ConsoleHelper.WriteHeader("YENI TALEP AC");
+            ConsoleHelper.WriteHeader("YENİ TALEP AÇ");
 
-            var title = ConsoleHelper.Prompt("Talep Basligini Girin (Iptal etmek icin bos birakin): ");
+            var title = ConsoleHelper.Prompt("Talep Başlığını Girin (İptal etmek için boş bırakın): ");
 
             if (string.IsNullOrWhiteSpace(title))
             {
-                ConsoleHelper.WriteWarning(Messages.TicketTitleEmpty + " Talep acma islemi iptal edildi.");
+                ConsoleHelper.WriteWarning(Messages.TicketTitleEmpty + " Talep açma işlemi iptal edildi.");
                 return;
             }
 
@@ -36,11 +36,11 @@ namespace BasitDestekTalebiSistemi.Client.UI
                 return;
             }
 
-            var description = ConsoleHelper.Prompt("Talep Aciklamasini Girin: ");
+            var description = ConsoleHelper.Prompt("Talep Açıklamasını Girin: ");
 
             if (string.IsNullOrWhiteSpace(description))
             {
-                ConsoleHelper.WriteWarning(Messages.TicketDescriptionEmpty + " Talep acma islemi iptal edildi.");
+                ConsoleHelper.WriteWarning(Messages.TicketDescriptionEmpty + " Talep açma işlemi iptal edildi.");
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace BasitDestekTalebiSistemi.Client.UI
                 return;
             }
 
-            ConsoleHelper.WriteInfo("Talep olusturuluyor...");
+            ConsoleHelper.WriteInfo("Talep oluşturuluyor...");
 
             var request = new CreateTicketRequest
             {
@@ -63,13 +63,13 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
             if (result.Success && result.Data != null)
             {
-                ConsoleHelper.WriteSuccess($"'{result.Data.Title}' talebi basariyla acildi! (ID: {result.Data.Id})");
+                ConsoleHelper.WriteSuccess($"'{result.Data.Title}' talebi başarıyla açıldı! (ID: {result.Data.Id})");
 
                 await _ticketDetailView.ShowAsync(result.Data.Id, currentUser);
             }
             else
             {
-                ConsoleHelper.WriteError("Talep olusturulamadi: " + result.Message);
+                ConsoleHelper.WriteError("Talep oluşturulamadı: " + result.Message);
             }
         }
     }

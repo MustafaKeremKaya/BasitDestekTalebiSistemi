@@ -27,7 +27,7 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
                 if (!detailResult.Success || detailResult.Data == null)
                 {
-                    ConsoleHelper.WriteError("Talep detayi alinamadi: " + detailResult.Message);
+                    ConsoleHelper.WriteError("Talep detayı alınamadı: " + detailResult.Message);
                     return;
                 }
 
@@ -36,11 +36,11 @@ namespace BasitDestekTalebiSistemi.Client.UI
                 PrintTicketDetail(ticket);
                 await PrintRepliesAsync(ticketId);
 
-                Console.WriteLine("\n [1] Yanit Yaz");
-                Console.WriteLine(" [2] Talebi Kapat");
-                Console.WriteLine(" [0] Ana Menuye Don");
+                Console.WriteLine("\n [1] Yanıt Yaz");
+                Console.WriteLine(" [2] Çözüldü Olarak İşaretle");
+                Console.WriteLine(" [0] Ana Menüye Dön");
 
-                var choice = ConsoleHelper.Prompt("\nSeciminiz: ");
+                var choice = ConsoleHelper.Prompt("\nSeçiminiz: ");
 
                 switch (choice)
                 {
@@ -63,7 +63,7 @@ namespace BasitDestekTalebiSistemi.Client.UI
                     case "0":
                         return;
                     default:
-                        ConsoleHelper.WriteWarning("Gecersiz secim! Lutfen 1, 2 veya 0 yaziniz.");
+                        ConsoleHelper.WriteWarning("Geçersiz seçim! Lütfen 1, 2 veya 0 yazınız.");
                         break;
                 }
             }
@@ -76,15 +76,15 @@ namespace BasitDestekTalebiSistemi.Client.UI
             Console.Write("Durum       : ");
             ConsoleHelper.WriteStatus(ticket.Status);
             Console.WriteLine();
-            Console.WriteLine($"Acan Kisi   : {ticket.CreatedBy}");
-            Console.WriteLine($"Acilis      : {ticket.CreatedAt.ToLocalTime():g}");
-            Console.WriteLine($"Aciklama    : {ticket.Description}");
-            Console.WriteLine($"Yanit Sayisi: {ticket.ReplyCount}");
+            Console.WriteLine($"Açan Kişi   : {ticket.CreatedBy}");
+            Console.WriteLine($"Açılış      : {ticket.CreatedAt.ToLocalTime():g}");
+            Console.WriteLine($"Açıklama    : {ticket.Description}");
+            Console.WriteLine($"Yanıt Sayısı: {ticket.ReplyCount}");
 
             var participants = ticket.Participants.Count > 0
                 ? string.Join(", ", ticket.Participants)
                 : "-";
-            Console.WriteLine($"Katilimcilar: {participants}");
+            Console.WriteLine($"Katılımcılar: {participants}");
         }
 
         private async Task PrintRepliesAsync(int ticketId)
@@ -97,13 +97,13 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
             if (!repliesResult.Success || repliesResult.Data == null)
             {
-                ConsoleHelper.WriteError("Yanitlar yuklenemedi: " + repliesResult.Message);
+                ConsoleHelper.WriteError("Yanıtlar yüklenemedi: " + repliesResult.Message);
                 return;
             }
 
             if (repliesResult.Data.Count == 0)
             {
-                Console.WriteLine("Bu talebe henuz yanit yazilmamis.");
+                Console.WriteLine("Bu talebe henüz yanıt yazılmamış.");
                 return;
             }
 
@@ -120,11 +120,11 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
         private async Task WriteReplyAsync(int ticketId, string currentUser)
         {
-            var content = ConsoleHelper.Prompt("Yanitinizi yazin (Iptal etmek icin bos birakin): ");
+            var content = ConsoleHelper.Prompt("Yanıtınızı yazın (İptal etmek için boş bırakın): ");
 
             if (string.IsNullOrWhiteSpace(content))
             {
-                ConsoleHelper.WriteWarning(Messages.ContentEmpty + " Yanit gonderilmedi.");
+                ConsoleHelper.WriteWarning(Messages.ContentEmpty + " Yanıt gönderilmedi.");
                 return;
             }
 
@@ -154,11 +154,11 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
         private async Task CloseTicketAsync(int ticketId)
         {
-            var confirm = ConsoleHelper.Prompt("Talebi kapatmak istediginize emin misiniz? (E/H): ");
+            var confirm = ConsoleHelper.Prompt("Talebi çözüldü olarak işaretlemek istediğinize emin misiniz? (E/H): ");
 
             if (!string.Equals(confirm, "E", StringComparison.OrdinalIgnoreCase))
             {
-                ConsoleHelper.WriteInfo("Kapatma islemi iptal edildi.");
+                ConsoleHelper.WriteInfo("İşlem iptal edildi.");
                 return;
             }
 

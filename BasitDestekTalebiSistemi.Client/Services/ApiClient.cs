@@ -273,7 +273,7 @@ namespace BasitDestekTalebiSistemi.Client.Services
                 return new ApiResponse<object>
                 {
                     Success = false,
-                    Message = $"Talep kapatılırken hata: {ex.Message}"
+                    Message = $"Talep çözüldü olarak işaretlenirken hata: {ex.Message}"
                 };
             }
         }

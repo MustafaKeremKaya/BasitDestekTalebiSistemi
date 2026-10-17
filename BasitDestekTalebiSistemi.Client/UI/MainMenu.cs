@@ -23,13 +23,13 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
             while (isRunning)
             {
-                ConsoleHelper.WriteHeader($"ANA MENU (Kullanici: {currentUser})");
+                ConsoleHelper.WriteHeader($"ANA MENÜ (Kullanıcı: {currentUser})");
 
                 Console.WriteLine(" [1] Talepleri Listele");
-                Console.WriteLine(" [2] Yeni Talep Ac");
-                Console.WriteLine(" [3] Cikis");
+                Console.WriteLine(" [2] Yeni Talep Aç");
+                Console.WriteLine(" [3] Çıkış");
 
-                var choice = ConsoleHelper.Prompt("\nSeciminiz (1-3): ");
+                var choice = ConsoleHelper.Prompt("\nSeçiminiz (1-3): ");
 
                 switch (choice)
                 {
@@ -41,10 +41,10 @@ namespace BasitDestekTalebiSistemi.Client.UI
                         break;
                     case "3":
                         isRunning = false;
-                        ConsoleHelper.WriteInfo("Uygulamadan cikiliyor. Iyi gunler dileriz!");
+                        ConsoleHelper.WriteInfo("Uygulamadan çıkılıyor. İyi günler dileriz!");
                         break;
                     default:
-                        ConsoleHelper.WriteWarning("Gecersiz secim! Lutfen 1, 2 veya 3 yazip Enter'a basiniz.");
+                        ConsoleHelper.WriteWarning("Geçersiz seçim! Lütfen 1, 2 veya 3 yazıp Enter'a basınız.");
                         break;
                 }
             }

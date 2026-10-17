@@ -2,7 +2,7 @@
 
 Bu proje, staj kapsamında geliştirilen katmanlı mimariye sahip bir **ASP.NET Core Web API** ve bu servise terminalden bağlanan **Console Client** uygulamasıdır.
 
-Kullanıcılar bir sorunu bildirmek için destek talebi açabilir, açılan taleplere yanıt yazabilir ve çözülen talepleri kapatabilir. Veriler PostgreSQL veritabanında kalıcı olarak saklanır. Kullanıcı girişi yoktur; kullanıcı uygulamayı açtığında bir isim girer ve talepler/yanıtlar bu isimle oluşturulur.
+Kullanıcılar bir sorunu bildirmek için destek talebi açabilir, açılan taleplere yanıt yazabilir ve çözülen talepleri çözüldü olarak işaretleyebilir. Veriler PostgreSQL veritabanında kalıcı olarak saklanır. Kullanıcı girişi yoktur; kullanıcı uygulamayı açtığında bir isim girer ve talepler/yanıtlar bu isimle oluşturulur.
 
 ---
 
@@ -29,17 +29,17 @@ Kullanıcılar bir sorunu bildirmek için destek talebi açabilir, açılan tale
 
 | Metod | Route | Açıklama | Durum Kodları |
 |---|---|---|---|
-| POST | `/api/tickets` | Yeni talep oluşturur (açık durumda başlar) | 201 / 400 |
+| POST | `/api/tickets` | Yeni talep oluşturur (çözülmedi durumunda başlar) | 201 / 400 |
 | GET | `/api/tickets` | Tüm talepleri listeler | 200 |
 | GET | `/api/tickets/{id}` | Talep detayı (durum, yanıt sayısı, katılımcılar) | 200 / 404 |
 | GET | `/api/tickets/{id}/replies` | Talebe ait yanıtları listeler | 200 / 404 |
 | POST | `/api/tickets/{id}/replies` | Talebe yanıt ekler | 201 / 400 / 404 |
-| PUT | `/api/tickets/{id}/close` | Talebi kapatır | 200 / 400 / 404 |
+| PUT | `/api/tickets/{id}/close` | Talebi çözüldü olarak işaretler | 200 / 400 / 404 |
 
 ### İş Kuralları
 
-- Kapalı bir talebe yeni yanıt eklenemez → `400 Bad Request` ("Kapalı bir talebe yeni yanıt eklenemez.")
-- Zaten kapalı olan bir talep tekrar kapatılamaz → `400 Bad Request` ("Bu talep zaten kapalı, tekrar kapatılamaz.")
+- Çözüldü olarak işaretlenmiş bir talebe yeni yanıt eklenemez → `400 Bad Request` ("Çözülmüş bir talebe yeni yanıt eklenemez.")
+- Zaten çözüldü olarak işaretlenmiş bir talep tekrar işaretlenemez → `400 Bad Request` ("Bu talep zaten çözüldü olarak işaretlenmiş, tekrar işaretlenemez.")
 - Var olmayan bir talep üzerinde işlem yapılamaz → `404 Not Found`
 - Başlık, açıklama, isim ve yanıt içeriği boş olamaz; uzunluk sınırları: başlık 100, açıklama 1000, isim 50, yanıt 500 karakter.
 
@@ -102,8 +102,8 @@ PostgreSQL kullanıcı adınız veya şifreniz farklıysa iki yeri de güncelley
    - `[2]` Yeni Talep Aç
    - `[3]` Çıkış
 5. Talep detay ekranı:
-   - `[1]` Yanıt Yaz (talep kapalıysa uyarı verir)
-   - `[2]` Talebi Kapat (talep zaten kapalıysa uyarı verir)
+   - `[1]` Yanıt Yaz (talep çözüldüyse uyarı verir)
+   - `[2]` Çözüldü Olarak İşaretle (talep zaten çözüldüyse uyarı verir)
    - `[0]` Ana Menüye Dön
 
 API'ye ulaşılamazsa istemci çökmez; "Sunucuya bağlanılamadı..." mesajı gösterilir.
@@ -115,17 +115,17 @@ API'ye ulaşılamazsa istemci çökmez; "Sunucuya bağlanılamadı..." mesajı g
 İki ayrı terminalde `Ahmet` ve `Mehmet` isimleriyle iki client açılır:
 
 1. **Ahmet** `[2] Yeni Talep Aç` ile "Mail gelmiyor" başlıklı talebi açar ve yanıt yazar.
-2. **Mehmet** `[1] Talepleri Listele` ekranında talebi görür, ID'sini girerek detaya geçer, yanıt yazar ve `[2] Talebi Kapat` ile talebi kapatır.
-3. **Ahmet**'in ekranında talep hâlâ açık görünürken yanıt yazmaya çalışırsa API isteği reddeder ve ekran güncellenir.
+2. **Mehmet** `[1] Talepleri Listele` ekranında talebi görür, ID'sini girerek detaya geçer, yanıt yazar ve `[2] Çözüldü Olarak İşaretle` ile talebi çözüldü olarak işaretler.
+3. **Ahmet**'in ekranında talep hâlâ çözülmedi görünürken yanıt yazmaya çalışırsa API isteği reddeder ve ekran güncellenir.
 
 Ekran çıktıları:
 
-**Talep listesi (`[1] Talepleri Listele`):** Talepler ID, başlık, durum (yeşil "Acik" / kırmızı "Kapali"), açan kişi, tarih ve yanıt sayısıyla tablo halinde gösterilir.
+**Talep listesi (`[1] Talepleri Listele`):** Talepler ID, başlık, durum (yeşil "Çözülmedi" / kırmızı "Çözüldü"), açan kişi, tarih ve yanıt sayısıyla tablo halinde gösterilir.
 ```
---- DESTEK TALEPLERI ---
-ID   Baslik                          Durum   Acan Kisi        Yanit
--------------------------------------------------------------------
-3    Mail gelmiyor                   Acik    Ahmet                1
+--- DESTEK TALEPLERİ ---
+ID   Başlık                          Durum       Açan Kişi        Tarih             Yanıt
+-----------------------------------------------------------------------------------------
+3    Mail gelmiyor                   Çözülmedi   Ahmet            18.10.2026 09:15      1
 ```
 
 **Talep detayı:** Talebin bilgileri, yanıt sayısı, yanıt veren katılımcılar ve geçmiş yanıtlar tarih sırasıyla gösterilir.
@@ -133,23 +133,24 @@ ID   Baslik                          Durum   Acan Kisi        Yanit
 ==================================================
 TALEP #3: Mail gelmiyor
 ==================================================
-Durum       : Kapali
-Acan Kisi   : Ahmet
-Aciklama    : Sabahtan beri Outlook'a hiç mail düşmüyor.
-Yanit Sayisi: 2
-Katilimcilar: Ahmet, Mehmet
+Durum       : Çözüldü
+Açan Kişi   : Ahmet
+Açılış      : 18.10.2026 09:15
+Açıklama    : Sabahtan beri Outlook'a hiç mail düşmüyor.
+Yanıt Sayısı: 2
+Katılımcılar: Ahmet, Mehmet
 
 --- YANITLAR ---
-Ahmet: Acil bakılmasını rica ediyorum.
-Mehmet: Sunucuyu kontrol ettim, düzeldi.
+[18.10.2026 09:16] Ahmet: Acil bakılmasını rica ediyorum.
+[18.10.2026 09:40] Mehmet: Sunucuyu kontrol ettim, düzeldi.
 ```
 
-**Kapalı talebe yanıt (diğer terminalde, API'nin döndürdüğü hata):**
+**Çözülmüş talebe yanıt (diğer terminalde, API'nin döndürdüğü hata):**
 ```
-[HATA] Kapalı bir talebe yeni yanıt eklenemez.
+[HATA] Çözülmüş bir talebe yeni yanıt eklenemez.
 ```
 
-**Zaten kapalı talebi kapatma denemesi:**
+**Zaten çözülmüş talebi tekrar işaretleme denemesi:**
 ```
-[UYARI] Bu talep zaten kapalı, tekrar kapatılamaz.
+[UYARI] Bu talep zaten çözüldü olarak işaretlenmiş, tekrar işaretlenemez.
 ```

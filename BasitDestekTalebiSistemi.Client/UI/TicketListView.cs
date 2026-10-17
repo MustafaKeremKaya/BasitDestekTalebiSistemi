@@ -21,19 +21,19 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
         public async Task ShowAsync(string currentUser)
         {
-            ConsoleHelper.WriteInfo("Talepler sunucudan yukleniyor...");
+            ConsoleHelper.WriteInfo("Talepler sunucudan yükleniyor...");
 
             var response = await _apiClient.GetTicketsAsync();
 
             if (!response.Success || response.Data == null)
             {
-                ConsoleHelper.WriteError("Talepler yuklenemedi: " + response.Message);
+                ConsoleHelper.WriteError("Talepler yüklenemedi: " + response.Message);
                 return;
             }
 
             if (response.Data.Count == 0)
             {
-                ConsoleHelper.WriteInfo("Henuz acilmis hicbir talep yok. 2'ye basarak ilk talebi siz acabilirsiniz!");
+                ConsoleHelper.WriteInfo("Henüz açılmış hiçbir talep yok. 2'ye basarak ilk talebi siz açabilirsiniz!");
                 return;
             }
 
@@ -41,7 +41,7 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
             while (true)
             {
-                var input = ConsoleHelper.Prompt("\nDetayini gormek istediginiz Talep ID'sini girin (Geri donmek icin 0): ");
+                var input = ConsoleHelper.Prompt("\nDetayını görmek istediğiniz Talep ID'sini girin (Geri dönmek için 0): ");
 
                 if (input == "0")
                 {
@@ -50,13 +50,13 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
                 if (!int.TryParse(input, out int selectedId))
                 {
-                    ConsoleHelper.WriteWarning("Gecersiz ID! Lutfen talep numarasini yaziniz.");
+                    ConsoleHelper.WriteWarning("Geçersiz ID! Lütfen talep numarasını yazınız.");
                     continue;
                 }
 
                 if (!response.Data.Any(t => t.Id == selectedId))
                 {
-                    ConsoleHelper.WriteWarning($"#{selectedId} numarali bir talep listede bulunamadi.");
+                    ConsoleHelper.WriteWarning($"#{selectedId} numaralı bir talep listede bulunamadı.");
                     continue;
                 }
 
@@ -68,16 +68,16 @@ namespace BasitDestekTalebiSistemi.Client.UI
         private void PrintTicketTable(List<TicketSummaryResponse> tickets)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n--- DESTEK TALEPLERI ---");
-            Console.WriteLine($"{"ID",-5}{"Baslik",-32}{"Durum",-8}{"Acan Kisi",-17}{"Tarih",-18}{"Yanit",5}");
-            Console.WriteLine(new string('-', 85));
+            Console.WriteLine("\n--- DESTEK TALEPLERİ ---");
+            Console.WriteLine($"{"ID",-5}{"Başlık",-32}{"Durum",-12}{"Açan Kişi",-17}{"Tarih",-18}{"Yanıt",5}");
+            Console.WriteLine(new string('-', 89));
             Console.ResetColor();
 
             foreach (var ticket in tickets.OrderBy(t => t.Id))
             {
                 Console.Write($"{ticket.Id,-5}{Shorten(ticket.Title, 30),-32}");
                 ConsoleHelper.WriteStatus(ticket.Status);
-                Console.Write(new string(' ', 8 - ConsoleHelper.GetStatusText(ticket.Status).Length));
+                Console.Write(new string(' ', 12 - ConsoleHelper.GetStatusText(ticket.Status).Length));
                 Console.WriteLine($"{Shorten(ticket.CreatedBy, 15),-17}{ticket.CreatedAt.ToLocalTime(),-18:g}{ticket.ReplyCount,5}");
             }
         }

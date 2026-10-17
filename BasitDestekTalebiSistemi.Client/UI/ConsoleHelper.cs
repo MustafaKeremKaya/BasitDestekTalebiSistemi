@@ -19,14 +19,14 @@ namespace BasitDestekTalebiSistemi.Client.UI
         public static void WriteInfo(string message)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("[BILGI] " + message);
+            Console.WriteLine("[BİLGİ] " + message);
             Console.ResetColor();
         }
 
         public static void WriteSuccess(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("[BASARILI] " + message);
+            Console.WriteLine("[BAŞARILI] " + message);
             Console.ResetColor();
         }
 
@@ -55,7 +55,7 @@ namespace BasitDestekTalebiSistemi.Client.UI
 
         public static string GetStatusText(TicketStatus status)
         {
-            return status == TicketStatus.Open ? "Acik" : "Kapali";
+            return status == TicketStatus.Open ? "Çözülmedi" : "Çözüldü";
         }
 
         public static void WriteStatus(TicketStatus status)

@@ -16,15 +16,15 @@ namespace BasitDestekTalebiSistemi.Core.Constants
         public static readonly string TicketDetailListed = "Talep detayı başarıyla getirildi.";
         public static readonly string TicketNotFound = "Belirtilen ID'ye sahip talep bulunamadı.";
         public static readonly string TicketForReplyNotFound = "Yanıt eklenecek talep bulunamadı.";
-        public static readonly string TicketAlreadyClosed = "Bu talep zaten kapalı, tekrar kapatılamaz.";
-        public static readonly string TicketClosed = "Talep başarıyla kapatıldı.";
+        public static readonly string TicketAlreadyClosed = "Bu talep zaten çözüldü olarak işaretlenmiş, tekrar işaretlenemez.";
+        public static readonly string TicketClosed = "Talep çözüldü olarak işaretlendi.";
 
         public static readonly string ReplyRequestEmpty = "Yanıt isteği boş olamaz.";
         public static readonly string RepliedByEmpty = "Yanıtı yazan kişi bilgisi boş bırakılamaz.";
         public static readonly string RepliedByTooLong = "Yanıtı yazan kişinin ismi 50 karakterden uzun olamaz.";
         public static readonly string ContentEmpty = "Yanıt içeriği boş bırakılamaz.";
         public static readonly string ContentTooLong = "Yanıt içeriği 500 karakterden uzun olamaz.";
-        public static readonly string ReplyToClosedTicket = "Kapalı bir talebe yeni yanıt eklenemez.";
+        public static readonly string ReplyToClosedTicket = "Çözülmüş bir talebe yeni yanıt eklenemez.";
         public static readonly string ReplyAdded = "Yanıt başarıyla eklendi.";
         public static readonly string RepliesListed = "Yanıtlar başarıyla listelendi.";
 
